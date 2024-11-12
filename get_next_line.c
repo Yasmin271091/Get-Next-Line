@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yasjimen <yasjimen@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:51:33 by yasjimen          #+#    #+#             */
-/*   Updated: 2024/11/09 16:52:40 by yasjimen         ###   ########.fr       */
+/*   Updated: 2024/11/12 17:05:40 by yasjimen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+static char	*read_and_store(int fd, char *stored);
+static char	*extract_line(char *stored);
+static char	*update_stored(char *stored);
 
 char	*get_next_line(int fd)
 {
