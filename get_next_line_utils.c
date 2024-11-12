@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:52:43 by yasjimen          #+#    #+#             */
-/*   Updated: 2024/11/04 19:02:56 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/09 16:53:20 by yasjimen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	return (result);
 }
 
-
 char	*ft_strdup(const char *s)
 {
 	size_t	len;
@@ -82,5 +81,3 @@ char	*ft_strdup(const char *s)
 	dup[len] = '\0';
 	return (dup);
 }
-
-

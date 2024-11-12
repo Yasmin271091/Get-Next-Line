@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:51:33 by yasjimen          #+#    #+#             */
-/*   Updated: 2024/11/05 20:22:28 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/09 16:52:40 by yasjimen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*get_next_line(int fd)
 {
-	static char	*stored;  
+	static char	*stored;
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
@@ -53,7 +53,6 @@ static char	*read_and_store(int fd, char *stored)
 	return (stored);
 }
 
-
 static char	*extract_line(char *stored)
 {
 	char	*line;
@@ -85,4 +84,3 @@ static char	*update_stored(char *stored)
 	free(stored);
 	return (new_stored);
 }
-
