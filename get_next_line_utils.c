@@ -6,7 +6,7 @@
 /*   By: yasjimen <yasjimen@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:52:43 by yasjimen          #+#    #+#             */
-/*   Updated: 2024/11/12 17:17:44 by yasjimen         ###   ########.fr       */
+/*   Updated: 2024/11/12 17:56:24 by yasjimen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,23 @@ char	*ft_strdup(const char *s)
 	dup[len] = '\0';
 	return (dup);
 }
+
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*substr;
 	size_t	i;
 
-	if (!s) || start >= ft_strlen(s);
+	if (!s || start >= ft_strlen(s))
+		return (NULL);
+	substr = (char *)malloc(len + 1);
+	if (!substr)
+		return (NULL);
+	i = 0;
+	while (i < len && s[start + i])
+	{
+		substr[i] = s[start + i];
+		i++;
+	}
+	substr[i] = '\0';
+	return (substr);
 }
