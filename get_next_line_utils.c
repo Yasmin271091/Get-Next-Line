@@ -6,7 +6,7 @@
 /*   By: yasjimen <yasjimen@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:52:43 by yasjimen          #+#    #+#             */
-/*   Updated: 2024/11/12 17:56:24 by yasjimen         ###   ########.fr       */
+/*   Updated: 2024/11/14 17:47:01 by yasjimen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,31 +34,37 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
+static void	ft_copy_str(char *dest, const char *src, size_t len)
+{
+	size_t	i;
+	i = 0;
+	while(i < len)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+}
+
 char	*ft_strjoin_free(char *s1, char *s2)
 {
 	char	*result;
 	size_t	len1;
 	size_t	len2;
-	size_t	i;
-
+	len1 = 0;
+	
+	if (s1)
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	result = (char *)malloc(len1 + len2 + 1);
 	if (!result)
 		return (NULL);
-	i = 0;
-	while (i < len1)
+	if (s1)
 	{
-		result[i] = s1[i];
-		i++;
+		ft_copy_str(result, s1, len1);
+		free(s1);
 	}
-	while (i < len1 + len2)
-	{
-		result[i] = s2[i - len1];
-		i++;
-	}
-	result[len1 + len2] = '\0';
-	free(s1);
+	ft_copy_str (result + len1, s2, len2);
+	result[len1 +len2] = '\0';
 	return (result);
 }
 
