@@ -6,56 +6,54 @@
 /*   By: yasjimen <yasjimen@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:51:33 by yasjimen          #+#    #+#             */
-/*   Updated: 2024/11/19 18:06:16 by yasjimen         ###   ########.fr       */
+/*   Updated: 2024/11/19 19:33:02 by yasjimen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*get_next_line(int fd)
+static int	handle_buffer(char **stored, char *buffer, int bytes_read)
 {
-	static char	*stored;
-	char		*line;
+	char	*temp;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	stored = read_and_store(fd, stored);
-	if (!stored)
-		return (NULL);
-	line = extract_line(stored);
-	stored = update_stored(stored);
-	return (line);
+	if (bytes_read == -1)
+		return (free(buffer), 0);
+	buffer[bytes_read] = '\0';
+	temp = ft_strjoin_free(*stored, buffer);
+	if (!temp)
+		return (free(buffer), 0);
+	*stored = temp;
+	return (1);
 }
 
-static char	*read_and_store(int fd, char *stored)
+char	*read_and_store(int fd, char *stored)
 {
 	char	*buffer;
 	int		bytes_read;
 	
+	buffer = NULL;
 	if (!stored)
 		stored = ft_strdup("");
-	buffer = (char *)malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
+	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (free(stored), NULL);
 	bytes_read = 1;
 	while (!ft_strchr(stored, '\n') && bytes_read != 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read == -1)
+		if (!handle_buffer(&stored, buffer, bytes_read))
 		{
-			free(buffer);
+			free(stored);
 			return (NULL);
 		}
-		buffer[bytes_read] = '\0';
-		stored = ft_strjoin_free(stored, buffer);
-		if (!stored)
-			break ;
 	}
 	free(buffer);
 	return (stored);
 }
 
-static char	*extract_line(char *stored)
+char	*extract_line(char *stored)
 {
 	char	*line;
 	int		i;
@@ -69,7 +67,7 @@ static char	*extract_line(char *stored)
 	return (line);
 }
 
-static char	*update_stored(char *stored)
+char	*update_stored(char *stored)
 {
 	char	*new_stored;
 	int		i;
@@ -85,4 +83,24 @@ static char	*update_stored(char *stored)
 	new_stored = ft_strdup(stored + i + 1);
 	free(stored);
 	return (new_stored);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*stored;
+	char		*line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	stored = read_and_store(fd, stored);
+	if (!stored)
+		return (NULL);
+	line = extract_line(stored);
+	stored = update_stored(stored);
+	if (!stored || stored[0] == '\0')
+	{
+		free(stored);
+		stored = NULL;
+	}
+	return (line);
 }
