@@ -6,7 +6,7 @@
 /*   By: yasjimen <yasjimen@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:51:33 by yasjimen          #+#    #+#             */
-/*   Updated: 2024/11/19 19:33:02 by yasjimen         ###   ########.fr       */
+/*   Updated: 2024/11/19 20:19:34 by yasjimen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,17 @@ static int	handle_buffer(char **stored, char *buffer, int bytes_read)
 	char	*temp;
 
 	if (bytes_read == -1)
-		return (free(buffer), 0);
+	{
+		free(buffer);
+		return (0);
+	}
 	buffer[bytes_read] = '\0';
 	temp = ft_strjoin_free(*stored, buffer);
 	if (!temp)
-		return (free(buffer), 0);
+	{
+		free(buffer);
+		return (0);
+	}
 	*stored = temp;
 	return (1);
 }
@@ -45,6 +51,7 @@ char	*read_and_store(int fd, char *stored)
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (!handle_buffer(&stored, buffer, bytes_read))
 		{
+			free(buffer);
 			free(stored);
 			return (NULL);
 		}
@@ -104,3 +111,26 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
+/*#include <stdio.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main() {
+    int fd;
+    char *line;
+
+    fd = open("archivo.txt", O_RDONLY);
+    if (fd < 0) {
+        perror("Error al abrir el archivo");
+        return 1;
+    }
+
+    while ((line = get_next_line(fd)) != NULL) {
+        printf("%s", line);
+        free(line);
+    }
+
+    close(fd);
+    return 0;
+}*/

@@ -6,7 +6,7 @@
 /*   By: yasjimen <yasjimen@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:52:43 by yasjimen          #+#    #+#             */
-/*   Updated: 2024/11/19 18:40:07 by yasjimen         ###   ########.fr       */
+/*   Updated: 2024/11/19 20:36:17 by yasjimen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,45 +34,24 @@ char	*ft_strchr(const char *s, int c)
 	}
 	return (NULL);
 }
-
-static void	ft_copy_str(char *dest, const char *src, size_t len)
+//modificar con srtlen
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < len)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-}
-
-char	*ft_strjoin_free(char *s1, char *s2)
-{
-	char	*result;
+	char	*joined;
 	size_t	len1;
 	size_t	len2;
+	size_t	totallen;
 
-	len1 = 0;
-	len2 = 0;
-	if (s1)
-		len1 = ft_strlen(s1);
-	if (s2)
-		len2 = ft_strlen(s2);
-	result = (char *)malloc(len1 + len2 + 1);
-	if (!result)
+	if (!s1 || !s2)
 		return (NULL);
-	if (s1)
-	{
-		ft_copy_str(result, s1, len1);
-		free(s1);
-	}
-	if (s2)
-	{
-		ft_copy_str(result + len1, s2, len2);
-	}
-	result[len1 + len2] = '\0';
-	return (result);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	joined = (char *)malloc(len1 + len2 + 1);
+	if (!joined)
+		return (NULL);
+	ft_strlcpy(joined, s1, len1 + 1);
+	ft_strlcat(joined, s2, len1 + len2 + 1);
+	return (joined);
 }
 
 char	*ft_strdup(const char *s)
