@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yasjimen <yasjimen@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:52:43 by yasjimen          #+#    #+#             */
-/*   Updated: 2024/11/25 21:07:50 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/26 17:54:31 by yasjimen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,28 @@ char	*ft_strchr(const char *s, int c)
 	}
 	return (NULL);
 }
-char	*ft_strjoin(char const *s1, char const *s2)
+
+char	*ft_strdup(const char *s)
+{
+	size_t	len;
+	char	*dup;
+	size_t	i;
+
+	len = ft_strlen(s);
+	dup = (char *)malloc(len + 1);
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		dup[i] = s[i];
+		i++;
+	}
+	dup[len] = '\0';
+	return (dup);
+}
+
+char	*ft_strjoin_free(char *s1, char *s2)
 {
 	int		size_s1;
 	int		size_s2;
@@ -55,28 +76,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (j < size_s2)
 		str[i++] = s2[j++];
 	str[i] = '\0';
+	free(s1);
 	return (str);
-}
-
-
-char	*ft_strdup(const char *s)
-{
-	size_t	len;
-	char	*dup;
-	size_t	i;
-
-	len = ft_strlen(s);
-	dup = (char *)malloc(len + 1);
-	if (!dup)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		dup[i] = s[i];
-		i++;
-	}
-	dup[len] = '\0';
-	return (dup);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
