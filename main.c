@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -21,4 +21,4 @@ int main() {
 
     close(fd);
     return 0;
-}
+}*/
