@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yasjimen <yasjimen@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:51:33 by yasjimen          #+#    #+#             */
-/*   Updated: 2024/11/26 18:30:51 by yasjimen         ###   ########.fr       */
+/*   Updated: 2024/12/06 14:45:38 by yasjimen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-static int	handle_buffer(char **stored, char *buffer, int bytes_read)
+int	handle_buffer(char **stored, char *buffer, int bytes_read)
 {
 	char	*temp;
 
@@ -88,15 +88,51 @@ char	*update_stored(char *stored)
 
 char	*get_next_line(int fd)
 {
-	static char	*stored;
+	static char	*stored[1024];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stored = read_and_store(fd, stored);
-	if (!stored)
+	stored[fd] = read_and_store(fd, stored[fd]);
+	if (!stored[fd])
 		return (NULL);
-	line = extract_line(stored);
-	stored = update_stored(stored);
+	line = extract_line(stored[fd]);
+	stored[fd] = update_stored(stored[fd]);
 	return (line);
 }
+
+/*int	main()
+{
+	int	fd;
+	int	fd2;
+	char	*line;
+
+	fd = open("archivo.txt", O_RDONLY);
+	fd2 = open("archivo1.txt", O_RDONLY);
+	if (fd < 0)
+	{
+		perror("Error al abrir archivo.txt");
+		return (1);
+	}
+	if (fd2 < 0)
+	{
+		perror("Error al abrir archivo1.txt");
+		close(fd);
+		return (1);
+	}
+	printf("Contenido de archivo.txt:\n");
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		printf("%s", line);
+		free(line);
+	}
+	printf("\nContenido de archivo1.txt:\n");
+	while ((line = get_next_line(fd2)) != NULL)
+	{
+		printf("%s", line);
+		free(line);
+	}
+	close(fd);
+	close(fd2);
+	return (0);
+}*/
